@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Kurby</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            /* background-color: #000; */
+        }
+        #kurby-container {
+            position: absolute;
+            display: none;
+        }
+        #kurby-gif {
+            /* Removing fixed width as we'll set it dynamically in JS */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="kurby-container">
+        <img id="kurby-gif" src="kurby.gif" alt="Kurby">
+    </div>
+
+    <script>
+        const kurbyContainer = document.getElementById('kurby-container');
+        const kurbyGif = document.getElementById('kurby-gif');
+        
+        // Function to get random number between min and max
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        // Function to position and show Kurby
+        function showKurby() {
+            // Randomize the size between 15 and 35 rem
+            const randomSize = getRandomNumber(15, 35);
+            kurbyGif.style.width = `${randomSize}rem`;
+            
+            // Get viewport dimensions (need to get them after sizing the image)
+            const viewportWidth = window.innerWidth - kurbyGif.offsetWidth;
+            const viewportHeight = window.innerHeight - kurbyGif.offsetHeight;
+            
+            // Calculate random position
+            const randomX = getRandomNumber(0, viewportWidth);
+            const randomY = getRandomNumber(0, viewportHeight);
+            
+            // Set position
+            kurbyContainer.style.left = `${randomX}px`;
+            kurbyContainer.style.top = `${randomY}px`;
+            
+            // Show Kurby
+            kurbyContainer.style.display = 'block';
+            
+            // Hide Kurby after 6 seconds
+            setTimeout(() => {
+                kurbyContainer.style.display = 'none';
+                
+                // Schedule next appearance after random interval (1-6 seconds)
+                const nextInterval = getRandomNumber(6000, 60000);
+                setTimeout(showKurby, nextInterval);
+            }, 5600);
+        }
+        
+        // Start the process when page loads
+        window.onload = () => {
+            // Initial random delay (5-20 seconds)
+            const initialDelay = getRandomNumber(5000, 20000);
+            setTimeout(showKurby, initialDelay);
+        };
+    </script>
+</body>
+</html>
