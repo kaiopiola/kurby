@@ -35,6 +35,16 @@
         const kurbyContainer = document.getElementById('kurby-container');
         const kurbyGif = document.getElementById('kurby-gif');
         
+        // Function to get URL parameters
+        function getUrlParam(param, defaultValue) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.has(param) ? parseInt(urlParams.get(param)) : defaultValue;
+        }
+        
+        // Get min and max time from URL parameters (in seconds, convert to milliseconds)
+        const minTime = getUrlParam('min', 6) * 1000; // Default 6 seconds
+        const maxTime = getUrlParam('max', 60) * 1000; // Default 60 seconds
+        
         // Function to get random number between min and max
         function getRandomNumber(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -65,16 +75,16 @@
             setTimeout(() => {
                 kurbyContainer.style.display = 'none';
                 
-                // Schedule next appearance after random interval (1-6 seconds)
-                const nextInterval = getRandomNumber(6000, 60000);
+                // Schedule next appearance after random interval using URL parameters
+                const nextInterval = getRandomNumber(minTime, maxTime);
                 setTimeout(showKurby, nextInterval);
             }, 5600);
         }
         
         // Start the process when page loads
         window.onload = () => {
-            // Initial random delay (5-20 seconds)
-            const initialDelay = getRandomNumber(5000, 20000);
+            // Initial random delay using the same min/max parameters
+            const initialDelay = getRandomNumber(minTime, maxTime);
             setTimeout(showKurby, initialDelay);
         };
     </script>
